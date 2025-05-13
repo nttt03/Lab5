@@ -1,54 +1,87 @@
-import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { TextInput, Button, Text } from 'react-native-paper';
+import { View } from "react-native";
+import { Button, HelperText, Text, TextInput } from "react-native-paper";
+import { useEffect, useState } from "react";
+import { login, useMyContextController } from "../store";
 
 const Login = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [controller, dispatch] = useMyContextController();
+  const { userLogin } = controller;
 
-  const onLogin = () => {
-    if (email === 'admin@gmail.com') {
-      navigation.navigate('Admin');
-    } else {
-      navigation.navigate('Customer');
-    }
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [hiddenPassword, setHiddenPassword] = useState(true);
+
+  const hasErrorEmail = () => !email.includes("@");
+  const hasErrorPassword = () => password.length < 6;
+
+  const handleLogin = (dispatch, email, password) => {
+    login(dispatch, email, password);
   };
 
+  useEffect(() => {
+    if (userLogin != null) {
+      if (userLogin.role === "admin") {
+        navigation.navigate("Admin");
+      } else {
+        navigation.navigate("Customer");
+      }
+    }
+  }, [userLogin]);
+
   return (
-    <View style={styles.container}>
-      <Text variant="titleLarge">Login</Text>
+    <View style={{ flex: 1, padding: 10 }}>
+      <Text
+        style={{
+          fontSize: 40,
+          fontWeight: "bold",
+          alignSelf: "center",
+          color: "pink",
+          marginTop: 100,
+          marginBottom: 50,
+        }}
+      >
+        Login
+      </Text>
       <TextInput
-        label="Email"
+        label={"Email"}
         value={email}
         onChangeText={setEmail}
-        style={styles.input}
       />
+      <HelperText type="error" visible={hasErrorEmail()}>
+        Địa chỉ Email không hợp lệ
+      </HelperText>
       <TextInput
-        label="Password"
+        label={"Password"}
         value={password}
         onChangeText={setPassword}
-        secureTextEntry
-        style={styles.input}
+        secureTextEntry={hiddenPassword}
+        right={<TextInput.Icon icon={"eye"} onPress={() => setHiddenPassword(!hiddenPassword)} />}
       />
-      <Button mode="contained" onPress={onLogin}>
+      <HelperText type="error" visible={hasErrorPassword()}>
+        Password phải 6 ký tự
+      </HelperText>
+      <Button
+        mode="contained"
+        buttonColor="blue"
+        onPress={() => handleLogin(dispatch, email, password)}
+      >
         Login
       </Button>
-      <Button onPress={() => navigation.navigate('Register')}>
-        Don't have an account? Register
-      </Button>
+      <View
+        style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}
+      >
+        <Button onPress={() => navigation.navigate("Register")}>
+          Create new account
+        </Button>
+      </View>
+      <View
+        style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}
+      >
+        <Button onPress={() => navigation.navigate("ForgotPassword")}>
+          Forgot Password
+        </Button>
+      </View>
     </View>
   );
 };
-
 export default Login;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 20,
-  },
-  input: {
-    marginVertical: 8,
-  },
-});
