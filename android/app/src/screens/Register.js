@@ -46,7 +46,7 @@ const Register = ({ navigation }) => {
           fontSize: 30,
           fontWeight: "bold",
           alignSelf: "center",
-          color: "pink",
+          color: "#ff4081",
           marginTop: 50,
           marginBottom: 50,
         }}
@@ -111,7 +111,7 @@ const Register = ({ navigation }) => {
         onChangeText={setPhone}
         style={{ marginBottom: 20 }}
       />
-      <Button mode="contained" onPress={handleCreateAccount}>
+      <Button mode="contained" buttonColor="#ff4081" onPress={handleCreateAccount}>
         Create New Account
       </Button>
       <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>

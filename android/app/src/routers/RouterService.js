@@ -4,6 +4,7 @@ import Services from "../screens/Services";
 import AddNewService from "../screens/AddNewService";
 import ServiceDetail from "../screens/ServiceDetail";
 import { IconButton } from "react-native-paper";
+import { useMyContextController } from '../store';
 
 const Stack = createNativeStackNavigator();
 

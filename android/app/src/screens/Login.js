@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { View,Image } from "react-native";
 import { Button, HelperText, Text, TextInput } from "react-native-paper";
 import { useEffect, useState } from "react";
 import { login, useMyContextController } from "../store";
@@ -23,25 +23,22 @@ const Login = ({ navigation }) => {
       if (userLogin.role === "admin") {
         navigation.navigate("Admin");
       } else {
-        navigation.navigate("Customer");
+        navigation.navigate("Home");
       }
     }
   }, [userLogin]);
 
   return (
     <View style={{ flex: 1, padding: 10 }}>
-      <Text
-        style={{
-          fontSize: 40,
-          fontWeight: "bold",
-          alignSelf: "center",
-          color: "pink",
-          marginTop: 100,
-          marginBottom: 50,
-        }}
-      >
-        Login
-      </Text>
+      <Image
+              source={require("../assets/login.png")}
+              style={{
+                alignSelf: "center",
+                marginVertical: 50,
+                width: 150,
+                height: 150
+              }}
+            />
       <TextInput
         label={"Email"}
         value={email}
@@ -62,7 +59,7 @@ const Login = ({ navigation }) => {
       </HelperText>
       <Button
         mode="contained"
-        buttonColor="blue"
+        buttonColor="#ff4081"
         onPress={() => handleLogin(dispatch, email, password)}
       >
         Login
